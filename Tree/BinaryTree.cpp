@@ -1,5 +1,6 @@
 #include <iostream>
 #include <algorithm>
+#include <queue>
 
 struct Node {
 	int data;
@@ -72,6 +73,27 @@ public:
 	
 };
 
+void LevelOrderTravesal(Node* root){
+	if (root == NULL) return;
+	std::queue<Node*> queue;
+	queue.push(root);
+	while (!queue.empty()) {
+		Node* current = queue.front();
+		queue.pop();
+		std::cout << current->data << " ";
+		if (current->left) queue.push(current->left);
+		if (current->right) queue.push(current->right);
+	}
+}
+
 int main() {
 	BinaryTree tree;
+	tree.Insert(5);
+	tree.Insert(3);
+	tree.Insert(7);
+	tree.Insert(2);
+	tree.Insert(4);
+	tree.Insert(6);
+	tree.Insert(8);
+	LevelOrderTravesal(tree.GetRootPtr());
 }
