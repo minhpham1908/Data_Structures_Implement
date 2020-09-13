@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 
 struct Node {
 	int data;
@@ -51,7 +52,7 @@ public:
 			else if (current->data == data) {
 				return 1;
 			}
-			else if (data < current ->data) {
+			else if (data < current->data) {
 				current = current->left;
 			}
 			else {
@@ -59,4 +60,18 @@ public:
 			}
 		}
 	};
+	Node* GetRootPtr() {
+		return root;
+	}
+	int FindTreeHeightRecursively(Node* current) {
+		if (current == NULL) {
+			return -1;
+		}
+		return std::max(FindTreeHeightRecursively(current->left), FindTreeHeightRecursively(current->right)) + 1;
+	}
+	
 };
+
+int main() {
+	BinaryTree tree;
+}
