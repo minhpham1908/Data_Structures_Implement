@@ -70,10 +70,10 @@ public:
 		}
 		return std::max(FindTreeHeightRecursively(current->left), FindTreeHeightRecursively(current->right)) + 1;
 	}
-	
+
 };
 
-void LevelOrderTravesal(Node* root){
+void LevelOrderTravesal(Node* root) {
 	if (root == NULL) return;
 	std::queue<Node*> queue;
 	queue.push(root);
@@ -86,6 +86,33 @@ void LevelOrderTravesal(Node* root){
 	}
 }
 
+//root left right
+/*all 3 below function:
+//space complexity O(h), h = height of tree = O(n) if nodes have onely left or right child, or = O(log2(n)) avarage
+//time complexity O((n), n = number of nodes
+*/
+void PreOrderTravesal(Node* root) {
+	if (root == NULL) return;
+	std::cout << root->data << " ";
+	PreOrderTravesal(root->left);
+	PreOrderTravesal(root->right);
+}
+
+//left root right
+void InOrderTravesal(Node* root) {
+	if (root == NULL) return;
+	InOrderTravesal(root->left);
+	std::cout << root->data << " ";
+	InOrderTravesal(root->right);
+}
+
+//left right root
+void PostOrderTravesal(Node* root) {
+	if (root == NULL) return;
+	PostOrderTravesal(root->left);
+	PostOrderTravesal(root->right);
+	std::cout << root->data << " ";
+}
 int main() {
 	BinaryTree tree;
 	tree.Insert(5);
@@ -95,5 +122,25 @@ int main() {
 	tree.Insert(4);
 	tree.Insert(6);
 	tree.Insert(8);
+
+	/*
+		 5
+	   /   \
+	  3	     7
+	 / \    /  \
+	2   4   6   8
+	*/
+
+	std::cout << "LevelOrder Travesal: ";
 	LevelOrderTravesal(tree.GetRootPtr());
+	std::cout << std::endl;
+	std::cout << "PreOrder Travesal: ";
+	PreOrderTravesal(tree.GetRootPtr()); // 5 3 2 4 7 6 8
+	std::cout << std::endl;
+	std::cout << "InOrderTravesal Travesal: ";
+	InOrderTravesal(tree.GetRootPtr()); // 2 3 4 5 6 7 8
+	std::cout << std::endl;
+	std::cout << "PostOrder Travesal: ";
+	PostOrderTravesal(tree.GetRootPtr()); // 2 4 3 6 8 7 5
+
 }
