@@ -1,6 +1,7 @@
 #include <iostream>
 #include <algorithm>
 #include <queue>
+#include <stack>
 
 struct Node {
 	int data;
@@ -113,6 +114,35 @@ void PostOrderTravesal(Node* root) {
 	PostOrderTravesal(root->right);
 	std::cout << root->data << " ";
 }
+
+bool IsBinarySearchTree(Node* root, int min, int max) {
+	if (root == NULL) return true;
+	if (root->data > min
+		&& root->data <= max
+		&& IsBinarySearchTree(root->left, min, root->data)
+		&& IsBinarySearchTree(root->right, root->data, max))
+		return true;
+	else return false;
+}
+
+bool IsBinarySearchTreeInOrder(Node* current) {
+	std::stack<Node*> S;
+	int value = INT_MIN;
+	while (current != NULL || !S.empty()) {
+		while (current != NULL) {
+			S.push(current);
+			current = current->left;
+
+		}
+		current = S.top();
+		S.pop();
+		if (current->data >= value) { value = current->data; }
+		else  return false;
+		current = current->right;
+	}
+	return true;
+}
+
 int main() {
 	BinaryTree tree;
 	tree.Insert(5);
@@ -142,5 +172,9 @@ int main() {
 	std::cout << std::endl;
 	std::cout << "PostOrder Travesal: ";
 	PostOrderTravesal(tree.GetRootPtr()); // 2 4 3 6 8 7 5
+	std::cout << std::endl;
+	std::cout << "Is Binary Search Tree: "<< IsBinarySearchTree(tree.GetRootPtr(), INT_MIN, INT_MAX) << " ";
+	std :: cout << "Is Binary Search Tree :" <<IsBinarySearchTreeInOrder(tree.GetRootPtr());
+
 
 }
