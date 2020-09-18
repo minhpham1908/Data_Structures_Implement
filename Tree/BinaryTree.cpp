@@ -10,7 +10,7 @@ struct Node {
 };
 
 class BinaryTree {
-private:
+public:
 	Node* root = NULL;
 	Node* GetNewNode(int data) {
 		Node* newNode = new Node();
@@ -143,6 +143,42 @@ bool IsBinarySearchTreeInOrder(Node* current) {
 	return true;
 }
 
+Node* FindMin(Node* node) {
+	while (node->left != NULL) {
+		node = node->left;
+	}
+	return node;
+}
+
+Node* Delete(Node* root, int data) {
+	if (root == NULL) return root;
+	else if (data < root->data) root->left = Delete(root->left, data);
+	else if (data > root->data) root->right = Delete(root->right, data);
+	else {
+		if (root->left == NULL && root->right == NULL) {
+			delete root;
+			root = NULL;
+		}
+		else if (root->left == NULL) {
+			Node* temp = root;
+			root = root->right;
+			delete temp;
+		}
+		else if (root->right == NULL) {
+			Node* temp = root;
+			root = root->left;
+			delete temp;
+		}
+		else {
+			Node* temp = FindMin(root->right);
+			root->data = temp->data;
+			root->right = Delete(root->right, temp->data);
+		}
+
+	}
+	return root;
+}
+
 int main() {
 	BinaryTree tree;
 	tree.Insert(5);
@@ -156,9 +192,9 @@ int main() {
 	/*
 		 5
 	   /   \
-	  3	     7
-	 / \    /  \
-	2   4   6   8
+	  3	    7
+	 / \   / \
+	2   4 6   8
 	*/
 
 	std::cout << "LevelOrder Travesal: ";
@@ -173,8 +209,10 @@ int main() {
 	std::cout << "PostOrder Travesal: ";
 	PostOrderTravesal(tree.GetRootPtr()); // 2 4 3 6 8 7 5
 	std::cout << std::endl;
-	std::cout << "Is Binary Search Tree: "<< IsBinarySearchTree(tree.GetRootPtr(), INT_MIN, INT_MAX) << " ";
-	std :: cout << "Is Binary Search Tree :" <<IsBinarySearchTreeInOrder(tree.GetRootPtr());
-
-
+	std::cout << "Is Binary Search Tree: " << IsBinarySearchTree(tree.GetRootPtr(), INT_MIN, INT_MAX) << " ";
+	std::cout << "Is Binary Search Tree : " << IsBinarySearchTreeInOrder(tree.GetRootPtr()) << std::endl;
+	tree.root = Delete(tree.GetRootPtr(), 5);
+	std::cout << std::endl;
+	std::cout << "InOrderTravesal Travesal: ";
+	InOrderTravesal(tree.GetRootPtr());
 }
